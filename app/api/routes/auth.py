@@ -7,43 +7,18 @@ from sqlmodel import select
 from app.models import user
 from fastapi import HTTPException,status
 from sqlmodel import select
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 from app.models.token import Token
 from app.utils import create_acc_token, hash
-from datetime import datetime,timedelta
+from datetime import timedelta
 from app.config import settings
-from jwt.exceptions import InvalidTokenError
-import jwt
+from app.utils.get_current_user import get_current_user
 
 router = APIRouter(
     prefix="/auth",
     tags=["auth"],
     responses={404: {"description": "Not found"}},
 )
-
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-
-
-def get_current_user(db: SessionDep , token: str = Depends(oauth2_scheme), ) -> User:
-    credentials_exception = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Could not validate credentials",
-    headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token,settings.secret_key,algorithms=[settings.algorithm])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-    except InvalidTokenError:
-        raise credentials_exception
-    
-    user = db.exec(select(User).where(User.username == username)).first()
-    if user is None:
-        raise credentials_exception
-    return user
-
 
 
 
