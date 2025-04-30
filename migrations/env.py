@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 # Import your SQLModel models and metadata
 from sqlmodel import SQLModel
-from app.models import Project, User  # Import all your models here
+from app.schemas import Project, User  # Import all your models here
 
 # this is the Alembic Config object
 config = context.config

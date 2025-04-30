@@ -1,6 +1,6 @@
 from app.api.dependencies.database import SessionDep 
-from app.models import Project
-from app.models.project import ProjectCreate
+from app.schemas import Project
+from app.schemas.project import ProjectCreate
 from fastapi import APIRouter, Depends
 from sqlmodel import select
 router = APIRouter(
