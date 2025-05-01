@@ -40,6 +40,7 @@ services:
       - postgres
     ports:
       - "8080:8080"
+    restart: always
 
 volumes:
   db-data:
