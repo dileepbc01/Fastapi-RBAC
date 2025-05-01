@@ -6,13 +6,15 @@ from app.schemas import User
 from sqlmodel import select
 from app.config import settings
 from app.api.dependencies.database import SessionDep 
-
-
+from typing import Annotated
+from sqlmodel.ext.asyncio.session import AsyncSession
+from api.dependencies.database import get_session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
-def get_current_user(db: SessionDep , token: str = Depends(oauth2_scheme), ) -> User:
+async def get_current_user(
+    db:SessionDep, token: str = Depends(oauth2_scheme), ) -> User:
     credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Could not validate credentials",
@@ -26,7 +28,7 @@ def get_current_user(db: SessionDep , token: str = Depends(oauth2_scheme), ) -> 
     except InvalidTokenError:
         raise credentials_exception
     
-    user = db.exec(select(User).where(User.username == username)).first()
+    user = (await db.exec(select(User).where(User.username == username))).first()
     if user is None:
         raise credentials_exception
     return user

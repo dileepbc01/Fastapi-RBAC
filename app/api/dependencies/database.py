@@ -1,23 +1,17 @@
-from typing import Annotated
-
+from typing import Annotated, AsyncGenerator
 from fastapi import Depends
-from sqlmodel import Session, create_engine,SQLModel
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
+from app.config import settings
+# PostgreSQL URL format
 
-sqlite_file_name = "database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
-
-connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, connect_args=connect_args)
+# Create an async engine for PostgreSQL
+engine: AsyncEngine = create_async_engine(settings.database_url, echo=True)
 
 
-def get_session():
-    with Session(engine) as session:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    async with AsyncSession(engine) as session:
         yield session
-        
-        
-
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
 
 
-SessionDep = Annotated[Session, Depends(get_session)]
+SessionDep = Annotated[AsyncSession, Depends(get_session)]
