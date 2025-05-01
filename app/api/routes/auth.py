@@ -6,7 +6,7 @@ from datetime import timedelta
 from app.utils.get_current_user import get_current_user
 from app.api.dependencies.database import SessionDep
 from app.schemas.user import User
-from app.models import user
+from app.models import user_temp
 from app.models.token import Token
 from app.utils import create_acc_token, hash
 from app.config import settings
@@ -20,7 +20,7 @@ router = APIRouter(
 
 @router.post("/register")
 async def register(
-    user_data: user.UserCreate,
+    user_data: user_temp.UserCreate,
     db: SessionDep,
 ) -> dict:
     existing_user = await db.exec(select(User).where(User.username == user_data.username))
