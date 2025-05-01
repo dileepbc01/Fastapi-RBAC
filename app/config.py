@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
-
+from app.utils.enums import LogLevelEnum, AppEnvironmentEnum
 load_dotenv()  
 
 class Settings(BaseSettings):
@@ -11,8 +11,8 @@ class Settings(BaseSettings):
     test: bool = False
     project_name: str = "My FastAPI project"
     oauth_token_secret: str = "my_dev_secret"
-    log_level: str = "DEBUG"
+    log_level: LogLevelEnum = LogLevelEnum.DEBUG
     access_token_expire_minutes:int=15
-
+    env:AppEnvironmentEnum = AppEnvironmentEnum.DEVELOPMENT
 
 settings = Settings()  # type: ignore

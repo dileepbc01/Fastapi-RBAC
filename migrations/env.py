@@ -16,7 +16,6 @@ from app.schemas import Project, User  # Import all your models here
 
 # this is the Alembic Config object
 config = context.config
-print("database_url", os.environ.get("DATABASE_URL"))
 config.set_main_option("sqlalchemy.url", os.environ.get("DATABASE_URL"))
 
 # Interpret the config file for Python logging

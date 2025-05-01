@@ -27,19 +27,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python app/main.py
+    command: sh -c "alembic upgrade head && python app/main.py"
     container_name: rbac_server
     tty: true
     working_dir: /app
     volumes:
       - .:/app:cached
       - ./.docker/.ipython:/root/.ipython:cached
-    environment:
-      PYTHONPATH: .
+    env_file:
+      - ./.env
     depends_on:
       - postgres
     ports:
-      - "8080:8000"
+      - "8080:8080"
 
 volumes:
   db-data:
