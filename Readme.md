@@ -34,6 +34,8 @@ Ensure you have the following installed on your system:
    - PgAdmin: [http://localhost:5050](http://localhost:5050)
 
 
+Demo Video: [Watch here](https://drive.google.com/file/d/10OuPOeIZf5oA_RjvloPH5kVpl5LLdC5o/view?usp=sharing)
+
 ## Running Services and Ports
 
 The following services are configured and exposed via Docker Compose:
