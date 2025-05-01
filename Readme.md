@@ -33,11 +33,6 @@ Ensure you have the following installed on your system:
    - FastAPI application: [http://localhost:8080](http://localhost:8080)
    - PgAdmin: [http://localhost:5050](http://localhost:5050)
 
-5. **Run Database Migrations**:
-   Apply the database migrations using Alembic:
-   ```bash
-   docker-compose exec fastapi-rbac alembic upgrade head
-   ```
 
 ## Running Services and Ports
 
