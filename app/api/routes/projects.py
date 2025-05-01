@@ -19,7 +19,7 @@ async def get_projects(
     db : SessionDep,
     user:User=Depends(require_permission(PermissionEnum.view_project))
 ) -> list[Project]:
-    projects = db.exec(select(Project)).all()
+    projects = (await db.exec(select(Project))).all()
     return projects
 
 @router.post('/')
@@ -30,6 +30,6 @@ async def create_project(
 ) -> Project:
     project = Project(**projectCreate.model_dump())
     db.add(project)
-    db.commit()
-    db.refresh(project)
+    await db.commit()
+    await db.refresh(project)
     return project
